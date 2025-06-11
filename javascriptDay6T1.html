@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Timer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #eaf6fa;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #3b6e75;
+      margin-bottom: 20px;
+    }
+
+    #time {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #start {
+      background-color: #5dade2;
+      color: white;
+    }
+
+    #stop {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    #reset {
+      background-color: #82e0aa;
+      color: black;
+    }
+
+    @media (max-width: 500px) {
+      #time {
+        font-size: 2rem;
+      }
+
+      button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>TIMER</h1>
+  <div id="time">25:00</div>
+  <div class="buttons">
+    <button id="start">START</button>
+    <button id="stop">STOP</button>
+    <button id="reset">RESET</button>
+  </div>
+
+  <script>
+    let startButton = document.getElementById('start');
+    let stopButton = document.getElementById('stop');
+    let resetButton = document.getElementById('reset');
+    let timeDisplay = document.getElementById('time');
+
+    let totalSeconds = 1500; // 25 minutes
+    let countdown;
+    let isRunning = false;
+
+    function updateDisplay() {
+      let minutes = Math.floor(totalSeconds / 60);
+      let seconds = totalSeconds % 60;
+      timeDisplay.textContent = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+    }
+
+    function startTimer() {
+      if (!isRunning) {
+        isRunning = true;
+        countdown = setInterval(() => {
+          if (totalSeconds > 0) {
+            totalSeconds--;
+            updateDisplay();
+          } else {
+            clearInterval(countdown);
+            isRunning = false;
+            alert("Time's up!");
+          }
+        }, 1000);
+      }
+    }
+
+    function stopTimer() {
+      clearInterval(countdown);
+      isRunning = false;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      totalSeconds = 1500;
+      updateDisplay();
+    }
+
+    startButton.addEventListener('click', startTimer);
+    stopButton.addEventListener('click', stopTimer);
+    resetButton.addEventListener('click', resetTimer);
+
+    updateDisplay();
+  </script>
+</body>
+</html>
